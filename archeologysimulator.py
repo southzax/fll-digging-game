@@ -68,7 +68,7 @@ while run:
                 moving_right = True
             if event.key == pygame.K_ESCAPE:
                 run = False
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and not popup_text:
                 make_dig_hole(player.rect.centerx, player.rect.bottom)
                 artifact = dig()
                 if artifact is not None:
@@ -89,8 +89,9 @@ while run:
         else:
             popup_text = None
 
-    # Update player
-    player.move(moving_left, moving_right)
+    # Update player (but not while popup is showing!)
+    if not popup_text:
+        player.move(moving_left, moving_right)
 
     # Handle jumping (not used yet, but ready!)
     if jumping:
