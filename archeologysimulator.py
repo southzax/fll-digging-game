@@ -50,6 +50,7 @@ jumping = False
 Y_VELOCITY = JUMP_HEIGHT
 popup_text = None
 popup_timer = 0
+popup_rarity = "common"  # Track rarity for border color
 
 # Main game loop
 while run:
@@ -70,9 +71,10 @@ while run:
                 run = False
             if event.key == pygame.K_SPACE:
                 make_dig_hole(player.rect.centerx, player.rect.bottom)
-                artifact = dig()
+                artifact, rarity = dig()
                 if artifact is not None:
                     popup_text = f"You found a {artifact['name']}!"
+                    popup_rarity = rarity
                     popup_timer = pygame.time.get_ticks()
 
         if event.type == pygame.KEYUP:
@@ -85,7 +87,9 @@ while run:
     current_time = pygame.time.get_ticks()
     if popup_text:
         if current_time - popup_timer < POPUP_DURATION:
-            draw_text_box(screen, popup_text, font, SCREEN_WIDTH, SCREEN_HEIGHT)
+            draw_text_box(
+                screen, popup_text, font, SCREEN_WIDTH, SCREEN_HEIGHT, popup_rarity
+            )
         else:
             popup_text = None
 
