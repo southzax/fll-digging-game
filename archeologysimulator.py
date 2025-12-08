@@ -20,6 +20,7 @@ from settings import (
     JUMP_HEIGHT,
     Y_GRAVITY,
     POPUP_DURATION,
+    DIG_COOLDOWN,
 )
 from player import Man  # Our player character
 from ui import (
@@ -50,6 +51,7 @@ jumping = False
 Y_VELOCITY = JUMP_HEIGHT
 popup_text = None
 popup_timer = 0
+last_dig_time = 0  # Track when we last dug
 
 # Main game loop
 while run:
@@ -69,11 +71,14 @@ while run:
             if event.key == pygame.K_ESCAPE:
                 run = False
             if event.key == pygame.K_SPACE:
-                make_dig_hole(player.rect.centerx, player.rect.bottom)
-                artifact = dig()
-                if artifact is not None:
-                    popup_text = f"You found a {artifact['name']}!"
-                    popup_timer = pygame.time.get_ticks()
+                current = pygame.time.get_ticks()
+                if current - last_dig_time >= DIG_COOLDOWN:
+                    last_dig_time = current
+                    make_dig_hole(player.rect.centerx, player.rect.bottom)
+                    artifact = dig()
+                    if artifact is not None:
+                        popup_text = f"You found a {artifact['name']}!"
+                        popup_timer = pygame.time.get_ticks()
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
