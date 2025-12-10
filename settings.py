@@ -31,3 +31,9 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (200, 200, 200)
 DARK_GRAY = (50, 50, 50)
+GREEN = (34, 139, 34)
+LIGHT_GREEN = (144, 238, 144)
+
+# Game states
+STATE_MENU = "menu"
+STATE_PLAYING = "playing"
