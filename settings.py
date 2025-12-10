@@ -26,6 +26,9 @@ JUMP_HEIGHT = 20
 # 1000 milliseconds = 1 second
 POPUP_DURATION = 2000
 
+# How long to wait between digs (in milliseconds)
+DIG_COOLDOWN = 1000
+
 # Colors (Red, Green, Blue) - values from 0 to 255
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

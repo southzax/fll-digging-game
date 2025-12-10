@@ -20,6 +20,7 @@ from settings import (
     JUMP_HEIGHT,
     Y_GRAVITY,
     POPUP_DURATION,
+    DIG_COOLDOWN,
     BLACK,
     WHITE,
     GREEN,
@@ -58,6 +59,7 @@ jumping = False
 Y_VELOCITY = JUMP_HEIGHT
 popup_text = None
 popup_timer = 0
+last_dig_time = 0  # Track when we last dug
 
 # Button settings
 button_width = 200
@@ -80,6 +82,10 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 run = False
+            if event.key == pygame.K_SPACE:
+                current = pygame.time.get_ticks()
+                if current - last_dig_time >= DIG_COOLDOWN:
+                    last_dig_time = current
 
         # Menu screen events
         if game_state == STATE_MENU:
@@ -105,6 +111,32 @@ while run:
                         popup_text = f"You found a {artifact['name']}!"
                         popup_timer = pygame.time.get_ticks()
 
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                moving_left = False
+            if event.key == pygame.K_d:
+                moving_right = False
+
+    # Show popup if we found something
+    current_time = pygame.time.get_ticks()
+    if popup_text:
+        if current_time - popup_timer < POPUP_DURATION:
+            draw_text_box(screen, popup_text, font, SCREEN_WIDTH, SCREEN_HEIGHT)
+        else:
+            popup_text = None
+
+    # Update player
+    player.move(moving_left, moving_right)
+
+    # Handle jumping (not used yet, but ready!)
+    if jumping:
+        player.rect.y -= Y_VELOCITY
+        Y_VELOCITY -= Y_GRAVITY
+        if Y_VELOCITY < -JUMP_HEIGHT:
+            jumping = False
+            Y_VELOCITY = JUMP_HEIGHT
+
+    player.draw()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     moving_left = False
