@@ -14,7 +14,7 @@ FPS = 60
 
 # Player settings
 PLAYER_START_X = 200
-PLAYER_START_Y = 400
+PLAYER_START_Y = 480  # Moved down so player stands on the ground
 PLAYER_SPEED = 5
 PLAYER_SCALE = 1
 
